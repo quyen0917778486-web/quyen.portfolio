@@ -1,0 +1,564 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Dang Nhat Quyen — Portfolio</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400&family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --cherry: #C41230;
+    --cherry-l: #E8193F;
+    --dark: #090909;
+    --card: #111111;
+    --card2: #1c1c1c;
+    --border: #222222;
+    --white: #FFFFFF;
+    --off-w: #E8E8E8;
+    --muted: #6B7280;
+    --gold: #F59E0B;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body { background: var(--dark); color: var(--off-w); font-family: 'DM Sans', sans-serif; overflow-x: hidden; }
+
+  /* ── NOISE OVERLAY ── */
+  body::before {
+    content: '';
+    position: fixed; inset: 0; pointer-events: none; z-index: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+    opacity: 0.35;
+  }
+
+  /* ── NAV ── */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    display: flex; justify-content: space-between; align-items: center;
+    padding: 1.2rem 3rem;
+    background: rgba(9,9,9,0.85);
+    backdrop-filter: blur(20px);
+    border-bottom: 1px solid var(--border);
+  }
+  .nav-logo { font-family: 'Playfair Display', serif; font-size: 1.1rem; color: var(--white); letter-spacing: 0.05em; }
+  .nav-logo span { color: var(--cherry); }
+  .nav-links { display: flex; gap: 2rem; list-style: none; }
+  .nav-links a { color: var(--muted); text-decoration: none; font-size: 0.85rem; letter-spacing: 0.08em; text-transform: uppercase; transition: color 0.2s; }
+  .nav-links a:hover { color: var(--cherry); }
+
+  /* ── HERO ── */
+  #hero {
+    min-height: 100vh; display: flex; align-items: center;
+    padding: 8rem 3rem 4rem;
+    position: relative;
+  }
+  .hero-bg-line {
+    position: absolute; left: 0; top: 0; bottom: 0; width: 4px;
+    background: linear-gradient(180deg, transparent, var(--cherry) 30%, var(--cherry) 70%, transparent);
+  }
+  .hero-inner { max-width: 1100px; margin: 0 auto; width: 100%; display: grid; grid-template-columns: 1fr 1fr; gap: 5rem; align-items: center; }
+  .hero-tag { display: inline-flex; align-items: center; gap: 0.6rem; background: rgba(196,18,48,0.12); border: 1px solid rgba(196,18,48,0.3); color: var(--cherry); font-size: 0.78rem; letter-spacing: 0.1em; text-transform: uppercase; padding: 0.4rem 1rem; border-radius: 2px; margin-bottom: 1.5rem; }
+  .hero-tag::before { content: ''; width: 6px; height: 6px; border-radius: 50%; background: var(--cherry); animation: pulse 2s infinite; }
+  @keyframes pulse { 0%,100%{opacity:1;transform:scale(1)} 50%{opacity:0.5;transform:scale(1.4)} }
+  h1 { font-family: 'Playfair Display', serif; font-size: clamp(3rem, 6vw, 5.5rem); font-weight: 900; color: var(--white); line-height: 0.95; letter-spacing: -0.02em; margin-bottom: 1.5rem; }
+  h1 em { font-style: italic; color: var(--cherry); }
+  .hero-desc { color: var(--muted); font-size: 1rem; line-height: 1.75; margin-bottom: 2rem; font-weight: 300; max-width: 480px; }
+  .hero-btns { display: flex; gap: 1rem; flex-wrap: wrap; }
+  .btn { display: inline-block; padding: 0.85rem 2rem; font-size: 0.85rem; font-weight: 600; letter-spacing: 0.05em; text-transform: uppercase; text-decoration: none; border-radius: 2px; transition: all 0.25s; cursor: pointer; border: none; }
+  .btn-primary { background: var(--cherry); color: var(--white); }
+  .btn-primary:hover { background: var(--cherry-l); transform: translateY(-2px); box-shadow: 0 8px 24px rgba(196,18,48,0.4); }
+  .btn-ghost { background: transparent; color: var(--off-w); border: 1px solid var(--border); }
+  .btn-ghost:hover { border-color: var(--cherry); color: var(--cherry); }
+
+  .hero-stats { display: grid; grid-template-columns: 1fr 1fr; gap: 1px; background: var(--border); border: 1px solid var(--border); }
+  .stat-item { background: var(--card); padding: 1.8rem; position: relative; overflow: hidden; }
+  .stat-item::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px; background: var(--cherry); transform: scaleX(0); transition: transform 0.4s; }
+  .stat-item:hover::before { transform: scaleX(1); }
+  .stat-v { font-family: 'Playfair Display', serif; font-size: 2.8rem; font-weight: 900; color: var(--white); line-height: 1; margin-bottom: 0.5rem; }
+  .stat-l { font-size: 0.78rem; color: var(--muted); text-transform: uppercase; letter-spacing: 0.08em; }
+
+  /* ── SECTIONS ── */
+  section { padding: 7rem 3rem; position: relative; }
+  .container { max-width: 1100px; margin: 0 auto; }
+  .section-label { font-family: 'DM Mono', monospace; font-size: 0.75rem; color: var(--cherry); letter-spacing: 0.15em; text-transform: uppercase; margin-bottom: 0.75rem; }
+  h2 { font-family: 'Playfair Display', serif; font-size: clamp(2rem, 4vw, 3rem); font-weight: 700; color: var(--white); margin-bottom: 3rem; }
+  h2 em { font-style: italic; color: var(--cherry); }
+
+  /* ── SKILLS ── */
+  #skills { background: var(--card); border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); }
+  .skills-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1px; background: var(--border); }
+  .skill-card { background: var(--dark); padding: 2rem; border-left: 3px solid transparent; transition: all 0.3s; }
+  .skill-card:hover { border-left-color: var(--cherry); background: var(--card); }
+  .skill-icon { font-size: 1.8rem; margin-bottom: 1rem; }
+  .skill-title { font-weight: 600; color: var(--white); margin-bottom: 0.5rem; font-size: 0.95rem; }
+  .skill-desc { color: var(--muted); font-size: 0.85rem; line-height: 1.6; }
+
+  /* ── EXPERIENCE ── */
+  #experience { background: var(--dark); }
+  .exp-timeline { position: relative; }
+  .exp-timeline::before { content: ''; position: absolute; left: 0; top: 0; bottom: 0; width: 1px; background: linear-gradient(180deg, var(--cherry), var(--border)); }
+  .exp-item { padding-left: 2.5rem; margin-bottom: 3.5rem; position: relative; }
+  .exp-dot { position: absolute; left: -5px; top: 0.3rem; width: 11px; height: 11px; border-radius: 50%; background: var(--cherry); border: 2px solid var(--cherry); box-shadow: 0 0 0 4px rgba(196,18,48,0.15); }
+  .exp-dot.past { background: var(--card2); border-color: var(--border); box-shadow: none; }
+  .exp-period { font-family: 'DM Mono', monospace; font-size: 0.72rem; color: var(--cherry); letter-spacing: 0.05em; margin-bottom: 0.4rem; }
+  .exp-company { font-family: 'Playfair Display', serif; font-size: 1.35rem; color: var(--white); margin-bottom: 0.2rem; }
+  .exp-role { font-size: 0.9rem; color: var(--muted); margin-bottom: 1rem; font-style: italic; }
+  .exp-pts { list-style: none; display: flex; flex-direction: column; gap: 0.45rem; }
+  .exp-pts li { font-size: 0.88rem; color: var(--muted); padding-left: 1.2rem; position: relative; line-height: 1.5; }
+  .exp-pts li::before { content: '›'; position: absolute; left: 0; color: var(--cherry); font-weight: 700; }
+
+  /* ── CASES ── */
+  #cases { background: var(--card); border-top: 1px solid var(--border); }
+  .cases-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; }
+  .case-card { background: var(--dark); border: 1px solid var(--border); padding: 2rem; position: relative; overflow: hidden; transition: all 0.3s; }
+  .case-card::after { content: ''; position: absolute; inset: 0; opacity: 0; background: radial-gradient(circle at 50% 0%, rgba(196,18,48,0.08), transparent 70%); transition: opacity 0.4s; }
+  .case-card:hover::after { opacity: 1; }
+  .case-card:hover { border-color: rgba(196,18,48,0.4); transform: translateY(-3px); box-shadow: 0 16px 40px rgba(0,0,0,0.5); }
+  .case-num { font-family: 'DM Mono', monospace; font-size: 0.72rem; color: var(--cherry); letter-spacing: 0.1em; margin-bottom: 0.5rem; }
+  .case-title { font-family: 'Playfair Display', serif; font-size: 1.3rem; color: var(--white); margin-bottom: 0.3rem; }
+  .case-sub { font-size: 0.8rem; color: var(--muted); margin-bottom: 1.2rem; font-style: italic; }
+  .case-pts { list-style: none; margin-bottom: 1.5rem; display: flex; flex-direction: column; gap: 0.4rem; }
+  .case-pts li { font-size: 0.84rem; color: var(--muted); padding-left: 1.2rem; position: relative; line-height: 1.5; }
+  .case-pts li::before { content: '›'; position: absolute; left: 0; color: var(--cherry); }
+  .case-results { display: flex; gap: 0.75rem; flex-wrap: wrap; }
+  .result-chip { background: var(--card); border: 1px solid var(--border); padding: 0.5rem 0.9rem; border-radius: 2px; }
+  .result-v { font-family: 'Playfair Display', serif; font-size: 1.1rem; font-weight: 700; color: var(--white); }
+  .result-l { font-size: 0.7rem; color: var(--muted); }
+  .case-color-bar { height: 3px; position: absolute; top: 0; left: 0; right: 0; }
+
+  /* ── SERVICES ── */
+  #services { background: var(--dark); }
+  .services-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; }
+  .svc-card { background: var(--card); border: 1px solid var(--border); padding: 2rem; transition: all 0.3s; }
+  .svc-card:hover { border-color: var(--cherry); }
+  .svc-n { font-family: 'DM Mono', monospace; font-size: 0.78rem; color: var(--cherry); margin-bottom: 0.75rem; }
+  .svc-title { font-family: 'Playfair Display', serif; font-size: 1.15rem; color: var(--white); margin-bottom: 0.75rem; }
+  .svc-desc { font-size: 0.88rem; color: var(--muted); line-height: 1.65; }
+
+  /* ── EDUCATION ── */
+  #education { background: var(--card); border-top: 1px solid var(--border); }
+  .edu-grid { display: grid; grid-template-columns: 2fr 1fr; gap: 3rem; }
+  .edu-item { display: flex; gap: 1.25rem; align-items: flex-start; margin-bottom: 2rem; padding-bottom: 2rem; border-bottom: 1px solid var(--border); }
+  .edu-item:last-child { border-bottom: none; margin-bottom: 0; }
+  .edu-icon { font-size: 2rem; flex-shrink: 0; }
+  .edu-inst { font-family: 'Playfair Display', serif; font-size: 1.1rem; color: var(--white); margin-bottom: 0.2rem; }
+  .edu-deg { font-size: 0.9rem; color: var(--off-w); margin-bottom: 0.2rem; }
+  .edu-note { font-size: 0.8rem; color: var(--muted); font-style: italic; }
+  .tools-wrap { display: flex; flex-wrap: wrap; gap: 0.6rem; }
+  .tool-tag { background: var(--dark); border: 1px solid var(--border); padding: 0.4rem 0.8rem; font-size: 0.78rem; color: var(--muted); border-radius: 2px; transition: all 0.2s; }
+  .tool-tag:hover { border-color: var(--cherry); color: var(--off-w); }
+
+  /* ── TESTIMONIALS ── */
+  #testimonials { background: var(--dark); }
+  .quote-grid { display: flex; flex-direction: column; gap: 1.5rem; }
+  .quote-card { background: var(--card); border: 1px solid var(--border); border-left: 3px solid var(--cherry); padding: 2rem 2rem 2rem 2.5rem; }
+  .quote-text { font-size: 0.95rem; color: var(--off-w); line-height: 1.7; font-style: italic; margin-bottom: 0.75rem; }
+  .quote-src { font-size: 0.8rem; color: var(--cherry); font-weight: 600; letter-spacing: 0.05em; }
+
+  /* ── CTA ── */
+  #cta { background: var(--cherry); text-align: center; padding: 6rem 3rem; }
+  #cta h2 { color: var(--white); margin-bottom: 1rem; }
+  #cta p { color: rgba(255,255,255,0.75); font-size: 1rem; margin-bottom: 2.5rem; }
+  .cta-links { display: flex; justify-content: center; gap: 1.5rem; flex-wrap: wrap; }
+  .cta-link { color: var(--white); text-decoration: none; font-size: 0.9rem; border-bottom: 1px solid rgba(255,255,255,0.4); padding-bottom: 2px; transition: border-color 0.2s; }
+  .cta-link:hover { border-color: var(--white); }
+
+  /* ── FOOTER ── */
+  footer { background: var(--card); border-top: 1px solid var(--border); padding: 2rem 3rem; display: flex; justify-content: space-between; align-items: center; }
+  footer p { font-size: 0.8rem; color: var(--muted); }
+
+  /* ── ANIMATIONS ── */
+  .fade-in { opacity: 0; transform: translateY(28px); transition: opacity 0.7s ease, transform 0.7s ease; }
+  .fade-in.visible { opacity: 1; transform: none; }
+  .stagger { transition-delay: 0.1s; }
+  .stagger-2 { transition-delay: 0.2s; }
+  .stagger-3 { transition-delay: 0.3s; }
+
+  @media (max-width: 768px) {
+    nav { padding: 1rem 1.5rem; }
+    .nav-links { display: none; }
+    section { padding: 4rem 1.5rem; }
+    .hero-inner, .cases-grid, .services-grid, .skills-grid, .edu-grid { grid-template-columns: 1fr; gap: 2rem; }
+    .hero-stats { grid-template-columns: 1fr 1fr; }
+    h1 { font-size: 2.8rem; }
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-logo">Dang Nhat <span>Quyen</span></div>
+  <ul class="nav-links">
+    <li><a href="#skills">Skills</a></li>
+    <li><a href="#experience">Experience</a></li>
+    <li><a href="#cases">Cases</a></li>
+    <li><a href="#services">Services</a></li>
+    <li><a href="#cta">Contact</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<section id="hero">
+  <div class="hero-bg-line"></div>
+  <div class="hero-inner">
+    <div>
+      <div class="hero-tag fade-in">Available for Opportunities</div>
+      <h1 class="fade-in stagger">DANG<br><em>NHAT</em><br>QUYEN</h1>
+      <p class="hero-desc fade-in stagger-2">
+        Commercially driven strategist with 3+ years across TikTok Shop, e-commerce campaigns, 
+        livestream commerce &amp; digital growth. I turn campaign data into measurable GMV results.
+      </p>
+      <div class="hero-btns fade-in stagger-3">
+        <a href="#cases" class="btn btn-primary">View Case Studies</a>
+        <a href="#cta" class="btn btn-ghost">Get in Touch</a>
+      </div>
+    </div>
+    <div class="hero-stats fade-in stagger-2">
+      <div class="stat-item">
+        <div class="stat-v">+2B</div>
+        <div class="stat-l">VND Contract Value<br>in 3 months</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-v">50%</div>
+        <div class="stat-l">CRM Engagement<br>Increase</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-v">6.7×</div>
+        <div class="stat-l">ROI on<br>Ad Spend</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-v">200%</div>
+        <div class="stat-l">GMV Growth<br>Achieved</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SKILLS -->
+<section id="skills">
+  <div class="container">
+    <div class="section-label">Expertise</div>
+    <h2>Strengths &amp; <em>Capabilities</em></h2>
+    <div class="skills-grid">
+      <div class="skill-card fade-in">
+        <div class="skill-icon">⚡</div>
+        <div class="skill-title">Platform Campaign & Livestream Ops</div>
+        <div class="skill-desc">End-to-end TikTok Shop campaigns, IMC execution, slot allocation, peak-event GMV optimization for Double Day, Payday, and Tet.</div>
+      </div>
+      <div class="skill-card fade-in stagger">
+        <div class="skill-icon">📊</div>
+        <div class="skill-title">Data Analytics & Performance Reporting</div>
+        <div class="skill-desc">Power BI, Google Data Studio, campaign ROI dashboards, real-time KPI monitoring and executive reporting.</div>
+      </div>
+      <div class="skill-card fade-in stagger-2">
+        <div class="skill-icon">🎯</div>
+        <div class="skill-title">E-Commerce & Digital Growth Strategy</div>
+        <div class="skill-desc">Full-funnel planning across TikTok, Meta Ads, Shopee/Lazada — from brand awareness to final conversion.</div>
+      </div>
+      <div class="skill-card fade-in">
+        <div class="skill-icon">👥</div>
+        <div class="skill-title">Project & Cross-functional Management</div>
+        <div class="skill-desc">Coordinating Product, KOL, Creative, and Category teams across high-stakes global campaigns.</div>
+      </div>
+      <div class="skill-card fade-in stagger">
+        <div class="skill-icon">🌟</div>
+        <div class="skill-title">Creator & KOL Ecosystem Management</div>
+        <div class="skill-desc">KOL/KOC sourcing, brief development, content scheduling, performance optimization and ecosystem building.</div>
+      </div>
+      <div class="skill-card fade-in stagger-2">
+        <div class="skill-icon">💰</div>
+        <div class="skill-title">Budget Allocation & ROI Monitoring</div>
+        <div class="skill-desc">P&L awareness, cost reduction strategies, and spend optimization across multi-platform campaigns.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- EXPERIENCE -->
+<section id="experience">
+  <div class="container">
+    <div class="section-label">Career</div>
+    <h2>Professional <em>Experience</em></h2>
+    <div class="exp-timeline">
+
+      <div class="exp-item fade-in">
+        <div class="exp-dot"></div>
+        <div class="exp-period">Dec 2025 – Mar 2026</div>
+        <div class="exp-company">ByteDance / TikTok Technologies</div>
+        <div class="exp-role">Project Management – Campaign & IMC Operations</div>
+        <ul class="exp-pts">
+          <li>Led IMC execution for major platform campaigns (Double Day 12.12, Payday, Mid-Month, Tet) — driving GMV performance across social and in-app channels</li>
+          <li>Developed campaign targets; coordinated Product, Creator/KOL, Community, and Category teams to align messaging and execution timelines</li>
+          <li>Managed end-to-end operations: slot allocation, visibility planning, budget control — on-time and within budget</li>
+          <li>Monitored real-time livestream performance metrics; applied insights to maximize partner results and optimize subsequent launches</li>
+        </ul>
+      </div>
+
+      <div class="exp-item fade-in">
+        <div class="exp-dot past"></div>
+        <div class="exp-period">Dec 2023 – May 2025</div>
+        <div class="exp-company">IMCN (TikTok & Douyin MCN)</div>
+        <div class="exp-role">Commercial Manager</div>
+        <ul class="exp-pts">
+          <li>Managed full-funnel e-commerce campaigns, driving +2B VND in contract value within 3 months</li>
+          <li>Executed digital campaigns across TikTok, Meta, and livestream platforms for Vitatree and TNE Global</li>
+          <li>Recruited and trained 7+ sales members → 50% increase in CRM engagement and lead conversions</li>
+          <li>Delivered executive performance reports; insights reduced marketing spend and improved ROI</li>
+          <li>Oversaw asset localization ensuring consistent brand messaging across all platforms</li>
+        </ul>
+      </div>
+
+      <div class="exp-item fade-in">
+        <div class="exp-dot past"></div>
+        <div class="exp-period">Feb 2023 – Nov 2023</div>
+        <div class="exp-company">Intercontinental Group</div>
+        <div class="exp-role">Operations Team Leader | Country Manager Assistant</div>
+        <ul class="exp-pts">
+          <li>Led day-to-day operations; managed 20+ interns — improving productivity 30% via structured onboarding</li>
+          <li>Supported Vietnam market entry and branch setup, coordinating with global HQ on compliance and execution</li>
+          <li>Oversaw B2B & B2C client onboarding, portfolio coordination, and revenue growth initiatives</li>
+        </ul>
+      </div>
+
+      <div class="exp-item fade-in">
+        <div class="exp-dot past"></div>
+        <div class="exp-period">Mar 2022 – Feb 2023</div>
+        <div class="exp-company">Hennes & Mauritz Group (H&M)</div>
+        <div class="exp-role">Sales Advisor (Part-time)</div>
+        <ul class="exp-pts">
+          <li>Customer engagement, retail operations, and sales performance in a fast-paced retail environment</li>
+        </ul>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- CASE STUDIES -->
+<section id="cases">
+  <div class="container">
+    <div class="section-label">Portfolio</div>
+    <h2>Case <em>Studies</em></h2>
+    <div class="cases-grid">
+
+      <div class="case-card fade-in">
+        <div class="case-color-bar" style="background:#C41230"></div>
+        <div class="case-num">CASE 01 · Beauty & Cosmetics</div>
+        <div class="case-title">E-Commerce Growth Campaign</div>
+        <div class="case-sub">TikTok Shop · Influencer Marketing · Paid Ads</div>
+        <div style="font-size:0.78rem;color:var(--muted);margin-bottom:1rem;font-style:italic">Role: Campaign Lead – Strategy & Commercial Management</div>
+        <ul class="case-pts">
+          <li>Managed end-to-end campaign: from pricing strategy to KOL coordination</li>
+          <li>Led cross-functional teams aligning media, influencer, and sales activities with brand goals</li>
+          <li>Oversaw client communication, budgeting, and ROI-accountable data reporting</li>
+          <li>Applied weekly performance analysis to optimize ads and promotional schedules</li>
+        </ul>
+        <div class="case-results">
+          <div class="result-chip"><div class="result-v">+200%</div><div class="result-l">GMV Growth</div></div>
+          <div class="result-chip"><div class="result-v">842%</div><div class="result-l">Video Views</div></div>
+          <div class="result-chip"><div class="result-v">6.7×</div><div class="result-l">Ad ROI</div></div>
+          <div class="result-chip"><div class="result-v">+170%</div><div class="result-l">Livestream GMV</div></div>
+        </div>
+      </div>
+
+      <div class="case-card fade-in stagger">
+        <div class="case-color-bar" style="background:#E8820A"></div>
+        <div class="case-num">CASE 02 · Korean Skincare</div>
+        <div class="case-title">Vietnam Market Entry Strategy</div>
+        <div class="case-sub">Influencer Marketing · Market Research · Performance Tracking</div>
+        <div style="font-size:0.78rem;color:var(--muted);margin-bottom:1rem;font-style:italic">Role: Account & Campaign Manager – Market Activation</div>
+        <ul class="case-pts">
+          <li>Designed and executed brand entry strategy combining influencer seeding and data-led content</li>
+          <li>Partnered with top skincare creators to build awareness and product credibility in new market</li>
+          <li>Managed campaign reporting, conversion tracking, and engagement optimization</li>
+          <li>Adjusted creative and posting frequency based on data trends to sustain visibility</li>
+        </ul>
+        <div class="case-results">
+          <div class="result-chip"><div class="result-v">+200%</div><div class="result-l">Traffic</div></div>
+          <div class="result-chip"><div class="result-v">842%</div><div class="result-l">Video Views</div></div>
+          <div class="result-chip"><div class="result-v">22K+</div><div class="result-l">Monthly Visits</div></div>
+        </div>
+      </div>
+
+      <div class="case-card fade-in">
+        <div class="case-color-bar" style="background:#10A37F"></div>
+        <div class="case-num">CASE 03 · Organic Food</div>
+        <div class="case-title">Social Commerce Growth Campaign</div>
+        <div class="case-sub">Livestream Strategy · Influencer Activation · Paid Ads</div>
+        <div style="font-size:0.78rem;color:var(--muted);margin-bottom:1rem;font-style:italic">Role: Commercial Planner & Performance Analyst</div>
+        <ul class="case-pts">
+          <li>Led campaign for health-focused organic brand targeting Gen Z & millennials via TikTok Shop</li>
+          <li>Coordinated KOL collaborations, content timelines, and ad budget allocation</li>
+          <li>Delivered weekly analytical reports to optimize engagement and conversion rates</li>
+          <li>Strengthened retention through educational and trend-driven content pillars</li>
+        </ul>
+        <div class="case-results">
+          <div class="result-chip"><div class="result-v">5×</div><div class="result-l">Video Views</div></div>
+          <div class="result-chip"><div class="result-v">+320%</div><div class="result-l">Profile Visits</div></div>
+          <div class="result-chip"><div class="result-v">12K</div><div class="result-l">New Followers</div></div>
+          <div class="result-chip"><div class="result-v">23%</div><div class="result-l">Conversion Rate</div></div>
+        </div>
+      </div>
+
+      <div class="case-card fade-in stagger">
+        <div class="case-color-bar" style="background:#6366F1"></div>
+        <div class="case-num">CASE 04 · Food & Beverage</div>
+        <div class="case-title">B2B Visibility & Brand Positioning</div>
+        <div class="case-sub">Multi-platform TVC · B2B Marketing · Digital Ads</div>
+        <div style="font-size:0.78rem;color:var(--muted);margin-bottom:1rem;font-style:italic">Role: Strategy & Client Lead – Commercial Campaigns</div>
+        <ul class="case-pts">
+          <li>Directed nationwide brand positioning campaign targeting corporate clients and resellers</li>
+          <li>Managed project proposals, pricing, and distribution across TikTok, Facebook, and YouTube</li>
+          <li>Collaborated with creative and production teams to align messaging with business objectives</li>
+          <li>Delivered client-facing performance reports and B2B lead insights</li>
+        </ul>
+        <div class="case-results">
+          <div class="result-chip"><div class="result-v">200+</div><div class="result-l">B2B Leads</div></div>
+          <div class="result-chip"><div class="result-v">10K+</div><div class="result-l">Engagements</div></div>
+          <div class="result-chip"><div class="result-v">↑</div><div class="result-l">National Brand</div></div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- SERVICES -->
+<section id="services">
+  <div class="container">
+    <div class="section-label">What I Offer</div>
+    <h2>Services &amp; <em>Deliverables</em></h2>
+    <div class="services-grid">
+      <div class="svc-card fade-in">
+        <div class="svc-n">01 · Research</div>
+        <div class="svc-title">Market Research & Brand Insight</div>
+        <div class="svc-desc">Consumer and competitor analysis, brand audits, persona mapping, and strategic insight reports. Deliverables provide clear direction for marketing, positioning, and product focus.</div>
+      </div>
+      <div class="svc-card fade-in stagger">
+        <div class="svc-n">02 · E-Commerce</div>
+        <div class="svc-title">E-Commerce Campaign Planning & Strategy</div>
+        <div class="svc-desc">End-to-end planning for TikTok Shop, Meta Ads, and online retail. Campaign calendars, KPI frameworks, creative & ad coordination for higher ROI and streamlined execution.</div>
+      </div>
+      <div class="svc-card fade-in">
+        <div class="svc-n">03 · Strategy</div>
+        <div class="svc-title">Commercial / Strategy Consulting</div>
+        <div class="svc-desc">Pricing models, go-to-market plans, business decks, and commercial audits. Data-backed strategies that bridge marketing performance with financial logic for enhanced profitability.</div>
+      </div>
+      <div class="svc-card fade-in stagger">
+        <div class="svc-n">04 · Analytics</div>
+        <div class="svc-title">Marketing Data & ROI Analysis</div>
+        <div class="svc-desc">Power BI or Google Data Studio dashboards, monthly KPI summaries. Translate campaign data into insights that improve efficiency, reduce spend, and strengthen returns.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- EDUCATION -->
+<section id="education">
+  <div class="container">
+    <div class="section-label">Background</div>
+    <h2>Education &amp; <em>Credentials</em></h2>
+    <div class="edu-grid">
+      <div>
+        <div class="edu-item fade-in">
+          <div class="edu-icon">🎓</div>
+          <div>
+            <div class="edu-inst">RMIT University</div>
+            <div class="edu-deg">Bachelor of Business — Economics & Finance</div>
+            <div class="edu-note">Royal Melbourne Institute of Technology</div>
+          </div>
+        </div>
+        <div class="edu-item fade-in stagger">
+          <div class="edu-icon">📜</div>
+          <div>
+            <div class="edu-inst">Sunway College, Malaysia</div>
+            <div class="edu-deg">Canadian International Matriculation Program</div>
+            <div class="edu-note">Graduate Excellence Achievement · GPA 3.24/4.0</div>
+          </div>
+        </div>
+        <div class="edu-item fade-in stagger-2">
+          <div class="edu-icon">📈</div>
+          <div>
+            <div class="edu-inst">CFA Institute</div>
+            <div class="edu-deg">CFA Program Candidate — Level I</div>
+            <div class="edu-note">Scheduled examination: May 2026</div>
+          </div>
+        </div>
+      </div>
+      <div class="fade-in stagger">
+        <div style="font-size:0.78rem;color:var(--cherry);letter-spacing:0.12em;text-transform:uppercase;margin-bottom:1.25rem;font-family:'DM Mono',monospace">Tools & Platforms</div>
+        <div class="tools-wrap">
+          <span class="tool-tag">TikTok Shop</span>
+          <span class="tool-tag">Meta Ads</span>
+          <span class="tool-tag">Power BI</span>
+          <span class="tool-tag">Google Data Studio</span>
+          <span class="tool-tag">Shopee / Lazada</span>
+          <span class="tool-tag">Douyin MCN</span>
+          <span class="tool-tag">CRM Systems</span>
+          <span class="tool-tag">AI Tools</span>
+          <span class="tool-tag">Google Analytics</span>
+          <span class="tool-tag">Excel / Sheets</span>
+          <span class="tool-tag">Notion</span>
+          <span class="tool-tag">Slack</span>
+        </div>
+        <div style="margin-top:2rem;font-size:0.78rem;color:var(--cherry);letter-spacing:0.12em;text-transform:uppercase;margin-bottom:1.25rem;font-family:'DM Mono',monospace">Markets</div>
+        <div class="tools-wrap">
+          <span class="tool-tag">Vietnam 🇻🇳</span>
+          <span class="tool-tag">China 🇨🇳</span>
+          <span class="tool-tag">Australia 🇦🇺</span>
+          <span class="tool-tag">Malaysia 🇲🇾</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- TESTIMONIALS -->
+<section id="testimonials">
+  <div class="container">
+    <div class="section-label">What Clients Say</div>
+    <h2>Testimonials</h2>
+    <div class="quote-grid">
+      <div class="quote-card fade-in">
+        <div class="quote-text">"Structured, sharp, and commercially minded — Quyen helped us make faster, smarter campaign decisions."</div>
+        <div class="quote-src">— E-Commerce Client</div>
+      </div>
+      <div class="quote-card fade-in stagger">
+        <div class="quote-text">"Her professionalism and strategic mindset impressed us from the first meeting. She understood our audience, managed influencers effectively, and delivered a campaign that exceeded expectations — both in reach and conversions."</div>
+        <div class="quote-src">— Brand Marketing Director</div>
+      </div>
+      <div class="quote-card fade-in stagger-2">
+        <div class="quote-text">"I was impressed by how quickly Quyen understood our business. She provided market insights that helped us redesign our campaign approach, reduce ad costs, and improve conversions within one month."</div>
+        <div class="quote-src">— Korean Skincare Brand</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section id="cta">
+  <div class="container">
+    <div class="section-label" style="color:rgba(255,255,255,0.6)">Let's Connect</div>
+    <h2 style="color:var(--white)">Open to <em style="color:rgba(255,255,255,0.7)">Opportunities</em></h2>
+    <p>Available for full-time roles, consulting projects, and remote collaborations in e-commerce, tech, and social marketing.</p>
+    <div class="cta-links">
+      <a href="mailto:dnquyen256@gmail.com" class="cta-link">dnquyen256@gmail.com</a>
+      <a href="https://linkedin.com/in/quyen-dang-2301bb155" target="_blank" class="cta-link">LinkedIn</a>
+      <span class="cta-link" style="cursor:default">📍 Ho Chi Minh City</span>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <p>© 2026 Dang Nhat Quyen · Portfolio</p>
+  <p style="color:var(--cherry);font-family:'DM Mono',monospace;font-size:0.75rem">E-Commerce · Strategy · Growth</p>
+</footer>
+
+<script>
+  // Intersection Observer for fade-in
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); } });
+  }, { threshold: 0.12 });
+  document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
+</script>
+</body>
+</html>
